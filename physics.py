@@ -316,3 +316,12 @@ def m(n_e, T_eV, phi_s, A_wall, m, I_i_cap=np.inf, h=0.61):
 def floating_potential(T_eV, m):
     '''wall potential in V to balance Bohm ion and random electron flux'''
     return 0.5*T_eV*np.log(m/(2*np.pi*c.m_e))
+
+
+
+def orifice_wall_currents(n_e, T_eV, phi_s, A_wall, m, I_i_cap=np.inf, h=0.61):
+    '''ion (Bohm, capped) and back-flux electron currents to the orifice wall in A'''
+    I_i = min(h*c.e*n_e*np.sqrt(c.e*T_eV/m)*A_wall, I_i_cap)
+    v_e = np.sqrt(8*c.e*T_eV/(np.pi*c.m_e))
+    I_b = h*0.25*c.e*n_e*v_e*np.exp(-phi_s/T_eV)*A_wall
+    return I_i, I_b
